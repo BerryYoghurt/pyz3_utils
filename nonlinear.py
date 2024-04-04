@@ -67,14 +67,14 @@ class Piecewise:
         if isinstance(other, float) or isinstance(other, int):
             return self.val() * other
 
-        aux = self.s.Real(f"auxPiecewiseMul_{self.id},{self.aux_id}")
+        aux = z3.Real(f"auxPiecewiseMul_{self.id},{self.aux_id}")
         self.aux_id += 1
         for (c, v) in self.vals:
             self.s.add(Implies(c, aux == v * other))
         return aux
 
     def __add__(self, other: Union[ArithRef, float, int]) -> ArithRef:
-        aux = self.s.Real(f"auxPiecewiseAdd_{self.id},{self.aux_id}")
+        aux = z3.Real(f"auxPiecewiseAdd_{self.id},{self.aux_id}")
         self.aux_id += 1
         for (c, v) in self.vals:
             self.s.add(Implies(c, aux == v + other))
