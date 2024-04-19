@@ -60,7 +60,7 @@ class Piecewise:
     def val(self) -> ArithRef:
         if self.val_def is not None:
             return self.val_def
-        self.val_def = self.s.Real(f"auxPiecewiseVal_{self.id}")
+        self.val_def = z3.Real(f"auxPiecewiseVal_{self.id}")
         for (c, v) in self.vals:
             self.s.add(Implies(c, self.val_def == v))
         return self.val_def
