@@ -21,11 +21,13 @@ class Piecewise:
     val_def: Optional[ArithRef]
 
     def __init__(self, s: MySolver,
+                 name,
                  vals: Union[List[Tuple[BoolRef, float]],
                              List[Tuple[BoolRef, int]]]):
         self.s = s
         self.vals = vals
         self.id = Piecewise.id
+        self.name = name
         Piecewise.id += 1
         # We may create multiple aux variables distinguished by this
         self.aux_id = 0
@@ -67,7 +69,7 @@ class Piecewise:
         if isinstance(other, float) or isinstance(other, int):
             return self.val() * other
 
-        aux = z3.Real(f"auxPiecewiseMul_{self.id},{self.aux_id}")
+        aux = z3.Real(f"auxPiecewiseMul_{self.name}_{self.id},{self.aux_id}")
         self.aux_id += 1
         for (c, v) in self.vals:
             self.s.add(Implies(c, aux == v * other))
